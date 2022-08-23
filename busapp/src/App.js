@@ -1,7 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import NavbarComp from "./components/NavbarComp";
 
 const Result = ( {bus, data} ) => {
   let bus_data = []
@@ -57,7 +60,32 @@ const App = () => {
       </form>
       <Result data = {data} bus = { currentBus }/> 
     </div>
+
+    
   );
 }
+
+function HomePage() {
+  return (
+    <Router>
+      <div>
+        <NavbarComp />
+      </div>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        
+      </Routes>
+
+      <div>
+      
+      </div>
+    </Router>
+  );
+}
+
 
 export default App;

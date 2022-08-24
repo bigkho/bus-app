@@ -13,17 +13,24 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-function distance(lat1, lon1, lat2, lon2) {
-  var p = 0.017453292519943295;    // Math.PI / 180
-  var c = Math.cos;
-  var a = 0.5 - c((lat2 - lat1) * p)/2 + 
-          c(lat1 * p) * c(lat2 * p) * 
-          (1 - c((lon2 - lon1) * p))/2;
+function distance(lat1, lat2, lon1, lon2) {
+  lon1 =  lon1 * Math.PI / 180
+  lon2 = lon2 * Math.PI / 180
+  lat1 = lat1 * Math.PI / 180
+  lat2 = lat2 * Math.PI / 180
 
-  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+  let dlon = lon2 - lon1
+  let dlat = lat2 - lat1
+  let a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2),2)
+               
+  let c = 2 * Math.asin(Math.sqrt(a))
+   
+  let r = 6371
+   
+  return(c * r)
 }
 
-const Result = ( {bus, data, location, locRequired} ) => {
+const Result = ( {bus, data, lattiude, longitude, location, locRequired} ) => {
   let possible = "searching again. Or this train may not be in service."
   let bus_data = []
   var bus_destination = new Set()
@@ -38,7 +45,7 @@ const Result = ( {bus, data, location, locRequired} ) => {
       bus_destination.add(data[i].finalStop)
     }
     if (locRequired) {
-      let dist = distance(data[i].location.latitude,data[i].location.longitude,location.latitude,location.longitude)
+      let dist = distance(data[i].location.latitude,lattiude,data[i].location.longitude,longitude)
       if (dist < 1) {
         bus_data.push(data[i])
       }
@@ -102,9 +109,6 @@ export const CardHeader2 = styled(Typography)({
   },
 })
 
-
-
-
 const App = () => {
   const [ bus, changeBus ] = useState('')
   const [ data, changeData ] = useState([])
@@ -113,6 +117,8 @@ const App = () => {
   const [ locationData, setLocationData ] = useState([])
   const [ locationRequired, setLocationRequired ] = useState(false)
   const [ busIds, setBusIds ] = useState([])
+  const [ longitude, changeLongitude] = useState(0)
+  const [ lattitude, changeLattitude ] = useState(0)
 
   const handleBusSubmit = (event) => {
     event.preventDefault()
@@ -128,6 +134,23 @@ const App = () => {
 
   const handleLR = () => {
     setLocationRequired(true)
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+    
+    function success(pos) {
+      const crd = pos.coords
+      changeLongitude(crd.longitude)
+      changeLattitude(crd.latitude)
+    }
+    
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`)
+    }
+    
+    navigator.geolocation.getCurrentPosition(success, error, options)
   }
   
 
@@ -279,7 +302,7 @@ const App = () => {
         </Card>
         { loading ? 
         <Skeleton sx={{ bgcolor: '#ddd', width: {xs:'80vw', sm:'100%', borderRadius: '45px'}, marginTop:'4vh' }} variant="rounded" height="35vh"/> : 
-        <Result data = {data} bus = { currentBus } location = { locationData } locRequired = { locationRequired }/>}
+        <Result data = {data} bus = { currentBus } location = {locationData} lattiude = { lattitude } longitude = {longitude} locRequired = { locationRequired }/>}
       </Container>
     </div>
   );

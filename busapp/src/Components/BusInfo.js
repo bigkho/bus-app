@@ -59,7 +59,7 @@ const BusInfo = ({id, stop, distance, expected}) => {
     <>
         <Card
             sx = {{
-                height: '35vh',
+                height: {xs:'45vh', sm:'35vh'},
                 width: {xs:'80vw', sm:'100%'},
                 background: 'linear-gradient(180deg, rgba(7,25,120,1) 0%, rgba(49,82,255,1) 100%)',
                 color: 'white',
@@ -72,7 +72,7 @@ const BusInfo = ({id, stop, distance, expected}) => {
         >
             <CardContent
                 sx = {{
-                    height: '35vh',
+                    height: {xs:'45vh', sm:'35vh'},
                     width: '100%',
                     boxSizing: 'inherit',
                     display: 'flex',

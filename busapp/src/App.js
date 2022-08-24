@@ -28,7 +28,9 @@ const Result = ( {bus, data, location, locRequired} ) => {
   let bus_data = []
   var bus_destination = new Set()
   for (let i = 0; i < data.length; i++) {
-    if (data[i] === undefined) {
+    if (data[i] === undefined
+      || data[i].stop === "Data unavailable"
+      ) {
       continue
     }
     if (data[i].busID === bus && !locRequired) {
@@ -158,7 +160,7 @@ const App = () => {
       console.log("Acquired user location data.")
     })
 
-  }, [currentBus, data])
+  }, [currentBus])
 
   useEffect(()=> {
     Aos.init({duration:2000,easing:'ease'})
@@ -276,7 +278,7 @@ const App = () => {
           </CardContent>
         </Card>
         { loading ? 
-        <Skeleton sx={{ bgcolor: '#ddd', width: {xs:'80vw', sm:'100%', borderRadius: '45px'} }} variant="rounded" height="35vh"/> : 
+        <Skeleton sx={{ bgcolor: '#ddd', width: {xs:'80vw', sm:'100%', borderRadius: '45px'}, marginTop:'4vh' }} variant="rounded" height="35vh"/> : 
         <Result data = {data} bus = { currentBus } location = { locationData } locRequired = { locationRequired }/>}
       </Container>
     </div>

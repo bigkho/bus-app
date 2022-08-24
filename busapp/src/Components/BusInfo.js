@@ -48,7 +48,14 @@ export const CardSubHeader = styled(Typography)({
 
 
 
-const BusInfo = ({id, stop, distance, expected}) => {
+const BusInfo = ({id, stop, distance, finalStop, expected}) => {
+
+    var timeString = new Date(expected).toLocaleTimeString()
+    var diff = Math.floor((new Date(expected) - new Date()) / 60000)
+    var timeDiff = 0
+    if (diff>=0) {
+        timeDiff = diff
+    }
 
     useEffect(()=> {
         Aos.init({duration:2000,easing:'ease'})
@@ -83,9 +90,10 @@ const BusInfo = ({id, stop, distance, expected}) => {
             >
                 <div>
                     <CardHeader>{id}</CardHeader>
-                    <CardSubHeader>{expected}</CardSubHeader>
+                    <CardSubHeader>{finalStop}</CardSubHeader>
                 </div>
                 <div>
+                    <CardSubHeader>{timeDiff} min away</CardSubHeader>
                     <CardHeader2>{distance}</CardHeader2>
                     <CardHeader2>{stop}</CardHeader2>
                 </div>

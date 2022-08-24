@@ -46,7 +46,7 @@ const Result = ( {bus, data, lattiude, longitude, location, locRequired} ) => {
     }
     if (locRequired) {
       let dist = distance(data[i].location.latitude,lattiude,data[i].location.longitude,longitude)
-      if (dist < 1) {
+      if (dist < 1.5) {
         bus_data.push(data[i])
       }
     }
@@ -75,7 +75,7 @@ const Result = ( {bus, data, lattiude, longitude, location, locRequired} ) => {
           gridGap: '10vh 10vw', 
           justifyContent:'space-evenly',
           gridTemplateColumns: {xs:'1 1fr',sm:'repeat(2, 1fr)'}}}>
-        {bus_data.map((bus,x)=> <BusInfo data-aos="fade-down" key = {x} id={bus.busID} stop={bus.stop} distance={bus.distance} expected={bus.finalStop} />) }
+        {bus_data.map((bus,x)=> <BusInfo data-aos="fade-down" key = {x} id={bus.busID} stop={bus.stop} distance={bus.distance} finalStop={bus.finalStop} expected={bus.expected}/>) }
       </Container>
     </>
   )
@@ -155,12 +155,12 @@ const App = () => {
   
 
   const handleChange = (event, value) => {
+    window.localStorage.setItem('busID', value)
     changeBus(value)
   }
 
   useEffect(() => {
     console.log('rendered')
-
     axios
     .get('http://localhost:5000/journies')
     .then(response => {
@@ -174,6 +174,7 @@ const App = () => {
         temp.add(data[i].busID)
       }
       setBusIds([...temp])
+      changeCurrentBus(window.localStorage.getItem('busID'))
     })
 
     axios
@@ -183,14 +184,8 @@ const App = () => {
       console.log("Acquired user location data.")
     })
 
+
   }, [currentBus])
-
-  useEffect(()=> {
-    Aos.init({duration:2000,easing:'ease'})
-  }, [])
-  
-
-  console.log(bus)
 
   return (
     <div>

@@ -6,7 +6,6 @@ async function doGetRequest() {
     await axios.get('http://bustime.mta.info/api/siri/vehicle-monitoring.json?key=56cb8d03-789b-4e75-81d7-bc85d9f7ffc6')
         .then(res => {
             console.log("Data refreshing...")
-            console.log(Date.now())
             Journey.deleteMany({}).then(function(){
                 monitored = res.data.Siri.ServiceDelivery.VehicleMonitoringDelivery[0].VehicleActivity
                 for(var i=0; i<monitored.length; i++) {
@@ -54,7 +53,7 @@ async function doGetRequest() {
 
 var requestLoop = setInterval(function(){
     doGetRequest()
-  }, 60000*5);
+  }, 60000);
 
 router.route('/').get((req,res)=> {
     Journey.find()

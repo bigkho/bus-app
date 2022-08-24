@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
-const axios = require("axios");
 
 require('dotenv').config();
 
@@ -25,6 +24,7 @@ app.use('/journies',journiesRouter);
 app.listen(port, () => {
     console.log(`Server on port: ${port}`);
 });
+
 
 
 

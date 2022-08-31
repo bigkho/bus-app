@@ -1,4 +1,13 @@
-# Bus Web App (in progress)
+# Bus Web App (MVP VERSION DOWN BELOW)
+ https://mta-bus-app.herokuapp.com/
+
+
+TO SEE OUR MVP OF OUR updated PRODUCT: https://mta-bus-app.herokuapp.com/
+
+
+
+
+
 
 ![Desktop - 1](https://user-images.githubusercontent.com/20734465/185812330-ebaa2484-2080-4d92-93d7-7b7843225bb0.png)
 
